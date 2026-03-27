@@ -24,15 +24,12 @@ private:
 };
 
 Personagem::Personagem(string novoNome, string novaClasse, int novoNivel, string novoItem[tamanhomochila], int novoVida) {
-    string *p;
-    *p = novoItem[0];
     nome = novoNome;
     classe = novaClasse;
     nivel = novoNivel;
     for (int i = 0; i < tamanhomochila; i++)
     {
-        itens[tamanhomochila] = &p;
-        p++;
+        itens[i] = novoItem[i];
     }
     vida = novoVida;
 }
@@ -40,7 +37,7 @@ Personagem::Personagem(string novoNome, string novaClasse, int novoNivel, string
 void Personagem::uparDeNivel()
 {
     Personagem::nivel++;
-    cout << "Upou para o nível" << Personagem::nivel << "!!!";
+    cout << "Upou para o nível " << Personagem::nivel << "!!!" << endl;
 }
 
 void Personagem::mostrarInventario()
@@ -48,7 +45,7 @@ void Personagem::mostrarInventario()
     cout << "Mochila\n-------------------\n";
     for (size_t i = 0; i < tamanhomochila; i++)
     {
-        cout << i << "°" << itens[i] << endl;
+        cout << i+1 << "°" << itens[i] << endl;
     }
     
 }
@@ -68,11 +65,13 @@ void Personagem::lootear(string novoItem, int itemDescartado){
 
 int main()
 {
-    Personagem Personagem1 = Personagem("Rudson", "Druida", 1, {"Espada boa", } )
+    string itensiniciais[] = {"Espada boa", "teste", "teste", "teste", "teste"};
+    Personagem Personagem1 = Personagem("Rudson", "Druida", 1, itensiniciais,15);
     while (true)
     {
         int menu = 0;
-        cout << "Bem vindo ao menu\n---------------------\n" 
+        cout 
+        << "Bem vindo ao menu\n---------------------\n" 
         << "1 - Upar o Nível\n" 
         << "2 - Mostrar Inventário\n" 
         << "3 - Alterou a Vida\n" 
@@ -82,15 +81,33 @@ int main()
         switch (menu)
         {
         case 1:
-            Personagem::uparDeNivel();
+            Personagem1.uparDeNivel();
             break;
         case 2:
-            
-        
+            Personagem1.mostrarInventario();
+            break;
+        case 3: {
+            int altvida;
+            cout << "Informe o valor de Dano(<0) ou Cura(>0)\n";
+            cin >> altvida;
+            Personagem1.alterarVida(altvida);
+            break;
+        }
+        case 4:{
+            string nvitem;
+            int descartitem;
+            cout << "Escreva o seu novo item: \n";
+            cin.ignore();
+            getline (cin,nvitem);
+            cout << "Qual item voce vai descartar(1 a 5): ";
+            cin >> descartitem;
+            Personagem1.lootear(nvitem, descartitem-1);
+            break;
+        } 
         default:
             break;
         }
-    }
+    };
     
     
     
